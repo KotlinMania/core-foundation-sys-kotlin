@@ -22,13 +22,10 @@ import org.jetbrains.kotlin.gradle.targets.wasm.yarn.WasmYarnRootEnvSpec
 
 plugins {
     kotlin("multiplatform") version "2.3.21"
+    kotlin("plugin.serialization") version "2.3.21"
+    id("com.android.kotlin.multiplatform.library") version "9.2.1"
     id("com.vanniktech.maven.publish") version "0.36.0"
 }
-
-// kotlin("plugin.serialization") and id("com.android.kotlin.multiplatform.library")
-// are intentionally absent — Apple-only target surface (see kotlin{} block) means
-// no Android KMP library target is declared, and there are no serialization-using
-// sources to compile.
 
 group = "io.github.kotlinmania"
 version = "0.1.1"
@@ -246,24 +243,45 @@ kotlin {
         binaries.framework { baseName = "CoreFoundationSys"; xcf.add(this) }
     }
 
-    // Apple-only impossibility for the non-Apple standard KMP target
-    // surface (jvm, android, js, wasmJs, wasmWasi, linuxX64, linuxArm64,
-    // mingwX64, androidNativeArm32/Arm64/X86/X64). The upstream Rust
-    // crate `core-foundation-sys` is pulled in only under
-    // `[target.'cfg(target_vendor = "apple")'.dependencies]`; CoreFoundation
-    // is a private Apple framework with no implementation off-Apple, and
-    // Kotlin/Native's `platform.CoreFoundation.*` bindings only exist
-    // for Apple targets. There is no kotlinmania sibling that could
-    // bridge those symbols on a non-Apple host. Per workspace AGENTS.md
-    // §5.4 ("Targets you must NEVER remove ... unless the repo-local
-    // docs explicitly document the technical impossibility"), the
-    // non-Apple targets are intentionally not declared here. See README
-    // "Apple-only" section for the full rationale.
+    linuxX64()
+    linuxArm64()
+    mingwX64()
+
+    androidNativeArm32()
+    androidNativeArm64()
+    androidNativeX86()
+    androidNativeX64()
+
+    js {
+        browser()
+        nodejs()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+        nodejs()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmWasi {
+        nodejs()
+    }
 
     swiftExport {
         moduleName = "CoreFoundationSys"
         flattenPackage = "io.github.kotlinmania.corefoundationsys"
     }
+
+    android {
+        namespace = "io.github.kotlinmania.corefoundationsys"
+        compileSdk = 34
+        minSdk = 24
+        withHostTestBuilder {}.configure {}
+        withDeviceTestBuilder {
+            sourceSetTreeName = "test"
+        }
+    }
+
+    jvm()
 
     sourceSets {
         val commonMain by getting {
@@ -298,13 +316,64 @@ tasks.withType<AbstractTestTask>().configureEach {
     }
 }
 
-// Kotlin/JS + Wasm-WASI toolchain configuration is intentionally absent —
-// this repo has no `js {}`, `wasmJs {}`, or `wasmWasi {}` targets (per
-// the Apple-only impossibility in the kotlin{} block), so the
-// `kotlinNodeJsSpec`, `kotlinWasmNodeJsSpec`, `kotlinYarnSpec`,
-// `kotlinWasmYarnSpec`, `kotlinYarn`, and `kotlinNodeJs` rootProject
-// extensions are never registered. Trying to configure them produces
-// "Extension with name 'kotlinNodeJsSpec' does not exist."
+rootProject.extensions.configure<NodeJsEnvSpec>("kotlinNodeJsSpec") {
+    version.set("24.15.0")
+}
+
+rootProject.extensions.configure<WasmNodeJsEnvSpec>("kotlinWasmNodeJsSpec") {
+    version.set("24.15.0")
+}
+
+rootProject.extensions.configure<YarnRootEnvSpec>("kotlinYarnSpec") {
+    version.set("1.22.22")
+}
+
+rootProject.extensions.configure<WasmYarnRootEnvSpec>("kotlinWasmYarnSpec") {
+    version.set("1.22.22")
+}
+
+rootProject.extensions.configure<YarnRootExtension>("kotlinYarn") {
+    resolution("diff", "8.0.3")
+    resolution("**/diff", "8.0.3")
+    resolution("fast-uri", "3.1.2")
+    resolution("**/fast-uri", "3.1.2")
+    resolution("serialize-javascript", "7.0.5")
+    resolution("**/serialize-javascript", "7.0.5")
+    resolution("webpack", "5.106.2")
+    resolution("**/webpack", "5.106.2")
+    resolution("follow-redirects", "1.16.0")
+    resolution("**/follow-redirects", "1.16.0")
+    resolution("lodash", "4.18.1")
+    resolution("**/lodash", "4.18.1")
+    resolution("ajv", "8.20.0")
+    resolution("**/ajv", "8.20.0")
+    resolution("brace-expansion", "5.0.6")
+    resolution("**/brace-expansion", "5.0.6")
+    resolution("flatted", "3.4.2")
+    resolution("**/flatted", "3.4.2")
+    resolution("minimatch", "10.2.5")
+    resolution("**/minimatch", "10.2.5")
+    resolution("picomatch", "4.0.4")
+    resolution("**/picomatch", "4.0.4")
+    resolution("qs", "6.15.2")
+    resolution("**/qs", "6.15.2")
+    resolution("socket.io-parser", "4.2.6")
+    resolution("**/socket.io-parser", "4.2.6")
+    resolution("ws", "8.20.1")
+    resolution("**/ws", "8.20.1")
+}
+
+
+val patchedKarmaWebpackPackage = rootProject.layout.projectDirectory.dir("gradle/npm/karma-webpack").asFile.absolutePath.replace("\\", "/")
+
+rootProject.extensions.configure<NodeJsRootExtension>("kotlinNodeJs") {
+    versions.webpack.version = "5.106.2"
+    versions.webpackCli.version = "7.0.2"
+    versions.karma.version = "npm:karma-maintained@6.4.7"
+    versions.karmaWebpack.version = "file:$patchedKarmaWebpackPackage"
+    versions.mocha.version = "12.0.0-beta-10"
+    versions.kotlinWebHelpers.version = "3.1.0"
+}
 
 mavenPublishing {
     publishToMavenCentral()
@@ -489,16 +558,42 @@ tasks.register("test") {
 }
 
 val fullTargetBuildTaskNames = setOf(
-    // Apple-only target surface — see kotlin{} block + README for the
-    // CoreFoundation impossibility rationale on the non-Apple targets.
+    "compileAndroidMain",
+    "compileAndroidHostTest",
+    "compileAndroidDeviceTest",
+    "assembleAndroidMain",
+    "assembleUnitTest",
+    "assembleAndroidTest",
+    "jvmMainClasses",
+    "jvmTestClasses",
+    "jsMainClasses",
+    "jsTestClasses",
+    "wasmJsMainClasses",
+    "wasmJsTestClasses",
+    "wasmWasiMainClasses",
+    "wasmWasiTestClasses",
+    "androidNativeArm32Binaries",
+    "androidNativeArm32TestBinaries",
+    "androidNativeArm64Binaries",
+    "androidNativeArm64TestBinaries",
+    "androidNativeX64Binaries",
+    "androidNativeX64TestBinaries",
+    "androidNativeX86Binaries",
+    "androidNativeX86TestBinaries",
     "iosArm64Binaries",
     "iosArm64TestBinaries",
     "iosSimulatorArm64Binaries",
     "iosSimulatorArm64TestBinaries",
     "iosX64Binaries",
     "iosX64TestBinaries",
+    "linuxArm64Binaries",
+    "linuxArm64TestBinaries",
+    "linuxX64Binaries",
+    "linuxX64TestBinaries",
     "macosArm64Binaries",
     "macosArm64TestBinaries",
+    "mingwX64Binaries",
+    "mingwX64TestBinaries",
     "tvosArm64Binaries",
     "tvosArm64TestBinaries",
     "tvosSimulatorArm64Binaries",
@@ -529,6 +624,36 @@ afterEvaluate {
     }
 }
 
-// patchWasmWasiNodePreopens is omitted — no `wasmWasi {}` target is
-// declared (see kotlin{} block for the CoreFoundation Apple-only
-// impossibility), so `wasmWasiNodeTest` does not exist to depend on.
+// The generated Wasm-WASI Node test runner cannot see the filesystem unless
+// the project directory is preopened. Patch the runner before wasmWasiNodeTest.
+val patchWasmWasiNodePreopens = tasks.register("patchWasmWasiNodePreopens") {
+    description = "Preopen the project directory for the generated Wasm-WASI Node test runner."
+    group = "verification"
+    dependsOn("compileTestDevelopmentExecutableKotlinWasmWasi")
+    outputs.upToDateWhen { false }
+
+    doLast {
+        val runnerFile = layout.buildDirectory.file(
+            "compileSync/wasmWasi/test/testDevelopmentExecutable/kotlin/${rootProject.name}-test.mjs",
+        ).get().asFile
+        if (!runnerFile.exists()) {
+            // No Wasm-WASI test runner was generated (the repo has no
+            // wasmWasi test sources), so there is nothing to preopen.
+            return@doLast
+        }
+        val text = runnerFile.readText()
+        val withCwdImport = text.replace(
+            "import { argv, env } from 'node:process';",
+            "import { argv, env, cwd } from 'node:process';",
+        )
+        val patched = withCwdImport.replace(
+            "const wasi = new WASI({ version: 'preview1', args: argv, env, });",
+            "const wasi = new WASI({ version: 'preview1', args: argv, env, preopens: { '/': cwd() }, });",
+        )
+        runnerFile.writeText(patched)
+    }
+}
+
+tasks.named("wasmWasiNodeTest") {
+    dependsOn(patchWasmWasiNodePreopens)
+}

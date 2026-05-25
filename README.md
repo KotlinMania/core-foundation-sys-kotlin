@@ -30,47 +30,16 @@ exposes the timezone + string surface specifically:
 Additional symbols will be added in later releases as downstream
 consumers need them.
 
-## Apple-only target surface
-
-Per workspace AGENTS.md §5.4 "documented technical impossibility", this
-repo declares **only** Apple targets in its `kotlin { … }` block:
-
-- `macosArm64`
-- `iosArm64`, `iosSimulatorArm64`, `iosX64`
-- `tvosArm64`, `tvosSimulatorArm64`
-- `watchosArm64`, `watchosDeviceArm64`, `watchosSimulatorArm64`
-
-The standard KMP non-Apple targets (`jvm`, `android`, `js`, `wasmJs`,
-`wasmWasi`, `linuxX64`, `linuxArm64`, `mingwX64`,
-`androidNativeArm32/Arm64/X86/X64`) are intentionally absent. CoreFoundation
-is a private Apple framework with no implementation off-Apple, and
-Kotlin/Native's `platform.CoreFoundation.*` bindings exist only for Apple
-targets — there is no kotlinmania sibling that could bridge those symbols
-on a non-Apple host. The upstream Rust crate matches this scoping
-(`[target.'cfg(target_vendor = "apple")'.dependencies]` in
-`iana-time-zone`'s Cargo.toml).
-
-Consumers depend on this from their own `appleMain` source set:
-
-```kotlin
-sourceSets {
-    val appleMain by getting {
-        dependencies {
-            implementation("io.github.kotlinmania:core-foundation-sys-kotlin:0.1.1")
-        }
-    }
-}
-```
-
-Depending on it from `commonMain` is unsupported; Gradle's KMP resolver
-will fail dependency resolution for any non-Apple target the consumer
-declares.
+Non-Apple targets get an empty `commonMain`. The artifact still publishes
+for every standard Kotlin Multiplatform target so consumers can declare
+a single `commonMain` dependency without splitting it into Apple /
+non-Apple variants.
 
 ## Install
 
 ```kotlin
 appleMain.dependencies {
-    implementation("io.github.kotlinmania:core-foundation-sys-kotlin:0.1.1")
+    implementation("io.github.kotlinmania:core-foundation-sys-kotlin:0.1.0")
 }
 ```
 
