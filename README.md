@@ -20,28 +20,47 @@ shaped to match the call sites in downstream `*-kotlin` consumers.
 The first such consumer is
 [`iana-time-zone-kotlin`](https://github.com/KotlinMania/iana-time-zone-kotlin)'s
 `appleMain.TzDarwin`, which is the only reason this initial release
-exposes the timezone + string surface specifically:
+exposes the timezone + string surface specifically.
+
+### `commonMain` — portable upstream content (every KMP target)
+
+- `CFRange`, `CFIndex`, `CFTypeID`, `CFOptionFlags`, `CFHashCode`,
+  `CFBoolean`, `CFUInt8`/`CFUInt16`/`CFSInt16`/`CFSInt32`/`CFUInt32`
+  ported from upstream `base.rs`.
+- `CFStringEncoding`, `UniChar`, `CFStringCompareFlags`,
+  `CFStringNormalizationForm` plus all 157 upstream `kCFStringEncoding*`,
+  `kCFCompare*`, and `kCFStringNormalizationForm*` constants ported from
+  upstream `string.rs`.
+
+### `appleMain` — Kotlin/Native cinterop bridge (Apple targets only)
 
 - `cfRelease`
 - `cfTimeZoneCopySystem` / `cfTimeZoneResetSystem` / `cfTimeZoneGetName`
 - `cfStringGetCStringPtr` / `cfStringGetLength` / `cfStringGetBytes`
-- `CFTimeZoneRef`, `CFStringRef`, `CFRange`, `CF_STRING_ENCODING_UTF8`
+- Opaque wrapper classes `CFTimeZoneRef`, `CFStringRef`
 
 Additional symbols will be added in later releases as downstream
 consumers need them.
 
-Non-Apple targets get an empty `commonMain`. The artifact still publishes
-for every standard Kotlin Multiplatform target so consumers can declare
-a single `commonMain` dependency without splitting it into Apple /
-non-Apple variants.
+The artifact publishes for every standard Kotlin Multiplatform target
+(per workspace AGENTS.md §5.4) so consumers can declare a single
+`commonMain` dependency for the portable constants without splitting it
+into Apple / non-Apple variants. The Apple-only FFI surface in
+`appleMain` is implicitly available to consumer source sets that
+inherit from `appleMain`.
 
 ## Install
 
 ```kotlin
-appleMain.dependencies {
-    implementation("io.github.kotlinmania:core-foundation-sys-kotlin:0.1.0")
+commonMain.dependencies {
+    implementation("io.github.kotlinmania:core-foundation-sys-kotlin:0.1.2")
 }
 ```
+
+The portable upstream constants and types (CFRange, CFStringEncoding +
+all `kCFStringEncoding*` etc.) resolve in `commonMain`; the Apple-only
+FFI functions and opaque ref classes resolve through the same dep when
+the consumer's source set hierarchy includes `appleMain`.
 
 ## Upstream
 

@@ -3,6 +3,7 @@
 
 package io.github.kotlinmania.corefoundationsys
 
+import io.github.kotlinmania.corefoundationsys.base.CFRange
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.convert
 import kotlinx.cinterop.memScoped

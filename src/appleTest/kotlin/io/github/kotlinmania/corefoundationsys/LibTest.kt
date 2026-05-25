@@ -1,6 +1,8 @@
 // port-lint: tests lib.rs
 package io.github.kotlinmania.corefoundationsys
 
+import io.github.kotlinmania.corefoundationsys.base.CFRange
+import io.github.kotlinmania.corefoundationsys.string.kCFStringEncodingUTF8
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
@@ -23,7 +25,7 @@ class LibTest {
             val name = cfTimeZoneGetName(tz)
             assertNotNull(name)
 
-            val asString = cfStringGetCStringPtr(name, CF_STRING_ENCODING_UTF8)
+            val asString = cfStringGetCStringPtr(name, kCFStringEncodingUTF8)
             assertNotNull(asString)
             assertFalse(asString.isEmpty())
 
@@ -53,7 +55,7 @@ class LibTest {
             val converted = cfStringGetBytes(
                 string = name,
                 range = CFRange(0, length),
-                encoding = CF_STRING_ENCODING_UTF8,
+                encoding = kCFStringEncodingUTF8,
                 lossByte = 0u,
                 isExternalRepresentation = false,
                 buf = buf,

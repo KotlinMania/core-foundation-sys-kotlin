@@ -3,6 +3,8 @@
 
 package io.github.kotlinmania.corefoundationsys
 
+import io.github.kotlinmania.corefoundationsys.base.CFRange
+import io.github.kotlinmania.corefoundationsys.string.CFStringEncoding
 import kotlinx.cinterop.toKString
 import platform.CoreFoundation.CFRelease
 import platform.CoreFoundation.CFStringGetCStringPtr as cf_CFStringGetCStringPtr
@@ -36,17 +38,10 @@ public class CFTimeZoneRef internal constructor(internal val ref: platform.CoreF
 /** Opaque wrapper around an Apple `CFStringRef`. */
 public class CFStringRef internal constructor(internal val ref: platform.CoreFoundation.CFStringRef)
 
-/**
- * Mirror of `core_foundation_sys::base::CFRange`. CoreFoundation indices
- * are `CFIndex` (signed long on 64-bit Apple); call sites typically
- * read small offsets into a single CFString, so 32-bit Kotlin `Int` is
- * sufficient for the public surface, and [cfStringGetBytes] widens to
- * 64-bit `CFIndex` internally via [CFRangeMake].
- */
-public data class CFRange(public val location: Int, public val length: Int)
-
-/** UTF-8 encoding constant, equivalent to `kCFStringEncodingUTF8`. */
-public const val CF_STRING_ENCODING_UTF8: UInt = 0x08000100u
+// CFRange lives in commonMain (see base/Base.kt) — `import
+// io.github.kotlinmania.corefoundationsys.base.CFRange`. UTF-8 encoding
+// constant lives in commonMain too: `kCFStringEncodingUTF8` in
+// string/Strings.kt mirrors the upstream Rust name verbatim.
 
 /**
  * Release a CoreFoundation object, matching `CFRelease(CFTypeRef)`.
