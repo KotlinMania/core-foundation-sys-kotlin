@@ -43,9 +43,18 @@ updates:
       - "gradle"
 
   - package-ecosystem: npm
-    directories:
-      - "/kotlin-js-store"
-      - "/kotlin-js-store/wasm"
+    directory: "/kotlin-js-store"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+      - "javascript"
+      - "wasm"
+
+  - package-ecosystem: npm
+    directory: "/kotlin-js-store/wasm"
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
