@@ -30,24 +30,25 @@ public actual fun cfStringGetBytes(
     isExternalRepresentation: Boolean,
     buf: ByteArray,
     maxBufLen: Int,
-): Int = memScoped {
-    val cfRange = CFRangeMake(range.location.convert(), range.length.convert())
-    val pinned = buf.pin()
-    try {
-        cf_CFStringGetBytes(
-            string.ref,
-            cfRange,
-            encoding,
-            lossByte,
-            isExternalRepresentation,
-            pinned.addressOf(0).reinterpret(),
-            maxBufLen.convert(),
-            // NULL usedBufLen out-param — the first consumer doesn't use
-            // it and skipping it dodges the CFIndex-pointer bit-width
-            // gap between targets.
-            null,
-        ).convert()
-    } finally {
-        pinned.unpin()
+): Int =
+    memScoped {
+        val cfRange = CFRangeMake(range.location.convert(), range.length.convert())
+        val pinned = buf.pin()
+        try {
+            cf_CFStringGetBytes(
+                string.ref,
+                cfRange,
+                encoding,
+                lossByte,
+                isExternalRepresentation,
+                pinned.addressOf(0).reinterpret(),
+                maxBufLen.convert(),
+                // NULL usedBufLen out-param — the first consumer doesn't use
+                // it and skipping it dodges the CFIndex-pointer bit-width
+                // gap between targets.
+                null,
+            ).convert()
+        } finally {
+            pinned.unpin()
+        }
     }
-}

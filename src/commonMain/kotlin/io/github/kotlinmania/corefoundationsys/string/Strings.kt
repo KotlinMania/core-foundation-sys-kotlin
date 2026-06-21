@@ -1,8 +1,8 @@
 // port-lint: source string.rs
 package io.github.kotlinmania.corefoundationsys.string
 
-import io.github.kotlinmania.corefoundationsys.base.CFOptionFlags
 import io.github.kotlinmania.corefoundationsys.base.CFIndex
+import io.github.kotlinmania.corefoundationsys.base.CFOptionFlags
 
 /**
  * `CFStringCompareFlags` from CoreFoundation's `string.rs` (upstream

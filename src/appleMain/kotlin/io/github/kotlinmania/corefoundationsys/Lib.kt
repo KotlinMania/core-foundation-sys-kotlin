@@ -4,7 +4,6 @@
 package io.github.kotlinmania.corefoundationsys
 
 import io.github.kotlinmania.corefoundationsys.base.CFRange
-import io.github.kotlinmania.corefoundationsys.string.CFStringEncoding
 import kotlinx.cinterop.toKString
 import platform.CoreFoundation.CFRelease
 import platform.CoreFoundation.CFStringGetCStringPtr as cf_CFStringGetCStringPtr
@@ -33,10 +32,14 @@ import platform.CoreFoundation.CFTimeZoneResetSystem as cf_CFTimeZoneResetSystem
  */
 
 /** Opaque wrapper around an Apple `CFTimeZoneRef`. */
-public class CFTimeZoneRef internal constructor(internal val ref: platform.CoreFoundation.CFTimeZoneRef)
+public class CFTimeZoneRef internal constructor(
+    internal val ref: platform.CoreFoundation.CFTimeZoneRef,
+)
 
 /** Opaque wrapper around an Apple `CFStringRef`. */
-public class CFStringRef internal constructor(internal val ref: platform.CoreFoundation.CFStringRef)
+public class CFStringRef internal constructor(
+    internal val ref: platform.CoreFoundation.CFStringRef,
+)
 
 // CFRange lives in commonMain (see base/Base.kt) — `import
 // io.github.kotlinmania.corefoundationsys.base.CFRange`. UTF-8 encoding

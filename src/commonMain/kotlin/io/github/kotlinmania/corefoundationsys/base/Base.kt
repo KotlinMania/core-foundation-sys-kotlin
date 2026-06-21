@@ -68,7 +68,10 @@ public typealias CFIndex = Int
  * }
  * ```
  */
-public data class CFRange(public val location: CFIndex, public val length: CFIndex) {
+public data class CFRange(
+    public val location: CFIndex,
+    public val length: CFIndex,
+) {
     public companion object {
         /** Mirror of upstream `CFRange::init(location, length)`. */
         public fun init(location: CFIndex, length: CFIndex): CFRange = CFRange(location, length)

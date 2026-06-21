@@ -52,15 +52,16 @@ class LibTest {
 
             val length = cfStringGetLength(name)
             val buf = ByteArray(64)
-            val converted = cfStringGetBytes(
-                string = name,
-                range = CFRange(0, length),
-                encoding = kCFStringEncodingUTF8,
-                lossByte = 0u,
-                isExternalRepresentation = false,
-                buf = buf,
-                maxBufLen = buf.size,
-            )
+            val converted =
+                cfStringGetBytes(
+                    string = name,
+                    range = CFRange(0, length),
+                    encoding = kCFStringEncodingUTF8,
+                    lossByte = 0u,
+                    isExternalRepresentation = false,
+                    buf = buf,
+                    maxBufLen = buf.size,
+                )
             assertTrue(converted == length, "expected $length chars converted, got $converted")
         } finally {
             cfRelease(tz)
