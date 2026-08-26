@@ -757,6 +757,7 @@ tasks.register("swiftExportSmokeTest") {
         if (swiftBuildDirFile.exists()) {
             swiftBuildDirFile.deleteRecursively()
         }
+        swiftBuildDirFile.mkdirs()
         val swiftBuildDir = swiftBuildDirFile.absolutePath
         execOperations
             .exec {
@@ -783,23 +784,6 @@ tasks.register("swiftExportSmokeTest") {
                 )
             }.assertNormalExitValue()
 
-        val generatedPackageSwift =
-            layout.buildDirectory
-                .file("SPMPackage/macosArm64/Debug/Package.swift")
-                .get()
-                .asFile
-        if (generatedPackageSwift.exists()) {
-            val text = generatedPackageSwift.readText()
-            if (!text.contains("platforms:")) {
-                generatedPackageSwift.writeText(
-                    text.replaceFirst(
-                        Regex("(name:\\s*\"[^\"]*\",)"),
-                        "\$1\n    platforms: [.macOS(.v14)],",
-                    ),
-                )
-            }
-        }
-
         val harnessBuildDir = layout.projectDirectory.dir("swift-test-harness/.build").asFile
         if (harnessBuildDir.exists()) {
             harnessBuildDir.deleteRecursively()
@@ -808,7 +792,7 @@ tasks.register("swiftExportSmokeTest") {
         execOperations
             .exec {
                 workingDir = layout.projectDirectory.dir("swift-test-harness").asFile
-                commandLine("swift", "test", "-j", "4")
+                commandLine("swift", "test")
             }.assertNormalExitValue()
     }
 }
