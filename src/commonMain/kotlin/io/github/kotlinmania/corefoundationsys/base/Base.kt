@@ -55,6 +55,51 @@ public typealias CFHashCode = Long
  */
 public typealias CFIndex = Int
 
+/** `Boolean` typealias matching upstream `pub type Boolean = u8`. */
+public typealias BooleanType = CFBoolean
+
+/** `mach_port_t` matching upstream `pub type mach_port_t = c_uint`. */
+public typealias mach_port_t = CFUInt32
+
+/** `OSStatus` matching upstream `pub type OSStatus = i32`. */
+public typealias OSStatus = Int
+
+/** `LangCode` matching upstream `pub type LangCode = SInt16`. */
+public typealias LangCode = CFSInt16
+
+/** `RegionCode` matching upstream `pub type RegionCode = SInt16`. */
+public typealias RegionCode = CFSInt16
+
+/** `UTF32Char` matching upstream `pub type UTF32Char = c_uint`. */
+public typealias UTF32Char = CFUInt32
+
+/** `UTF16Char` matching upstream `pub type UTF16Char = c_ushort`. */
+public typealias UTF16Char = CFUInt16
+
+/** `UTF8Char` matching upstream `pub type UTF8Char = c_uchar`. */
+public typealias UTF8Char = CFUInt8
+
+/**
+ * `CFComparisonResult` from CoreFoundation's `base.rs`.
+ */
+public enum class CFComparisonResult(public val value: CFIndex) {
+    LessThan(-1),
+    EqualTo(0),
+    GreaterThan(1);
+
+    public companion object {
+        public fun fromValue(value: CFIndex): CFComparisonResult = when (value) {
+            -1 -> LessThan
+            0 -> EqualTo
+            1 -> GreaterThan
+            else -> throw IllegalArgumentException("Unknown CFComparisonResult value: $value")
+        }
+    }
+}
+
+/** Constant used to indicate failed searches (upstream `pub static kCFNotFound: CFIndex = -1`). */
+public const val kCFNotFound: CFIndex = -1
+
 /**
  * `CFRange` from CoreFoundation's `base.rs` — a half-open interval
  * `[location, location + length)` into a CFString, CFArray, CFData, or
@@ -77,3 +122,4 @@ public data class CFRange(
         public fun init(location: CFIndex, length: CFIndex): CFRange = CFRange(location, length)
     }
 }
+
