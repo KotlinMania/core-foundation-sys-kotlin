@@ -193,3 +193,13 @@ public const val kCFStringNormalizationFormD: CFStringNormalizationForm = 0
 public const val kCFStringNormalizationFormKD: CFStringNormalizationForm = 1
 public const val kCFStringNormalizationFormC: CFStringNormalizationForm = 2
 public const val kCFStringNormalizationFormKC: CFStringNormalizationForm = 3
+
+public class __CFString
+public typealias CFStringRef = __CFString
+public typealias CFMutableStringRef = __CFString
+
+public object CFString {
+    public const val TYPE_ID: io.github.kotlinmania.corefoundationsys.base.CFTypeID = 35L
+
+    public fun getTypeID(): io.github.kotlinmania.corefoundationsys.base.CFTypeID = TYPE_ID
+}

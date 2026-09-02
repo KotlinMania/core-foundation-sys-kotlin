@@ -1,6 +1,7 @@
 // port-lint: tests tests/lib.rs
 package io.github.kotlinmania.corefoundationsys
 
+import io.github.kotlinmania.corefoundationsys.attributedstring.CFAttributedString
 import io.github.kotlinmania.corefoundationsys.base.CFRange
 import io.github.kotlinmania.corefoundationsys.bitvector.kCFBitOne
 import io.github.kotlinmania.corefoundationsys.bitvector.kCFBitZero
@@ -8,22 +9,41 @@ import io.github.kotlinmania.corefoundationsys.data.kCFDataSearchAnchored
 import io.github.kotlinmania.corefoundationsys.data.kCFDataSearchBackwards
 import io.github.kotlinmania.corefoundationsys.date.kCFAbsoluteTimeIntervalSince1904
 import io.github.kotlinmania.corefoundationsys.date.kCFAbsoluteTimeIntervalSince1970
-import io.github.kotlinmania.corefoundationsys.error.CFErrorDomain
+import io.github.kotlinmania.corefoundationsys.error.CFErrorDomains
 import io.github.kotlinmania.corefoundationsys.error.CFErrorUserInfoKey
+import io.github.kotlinmania.corefoundationsys.error.kCFErrorDomainCocoa
+import io.github.kotlinmania.corefoundationsys.error.kCFErrorDomainPOSIX
+import io.github.kotlinmania.corefoundationsys.filedescriptor.kCFFileDescriptorReadCallBack
+import io.github.kotlinmania.corefoundationsys.filedescriptor.kCFFileDescriptorWriteCallBack
+import io.github.kotlinmania.corefoundationsys.filesecurity.kCFFileSecurityClearOwner
+import io.github.kotlinmania.corefoundationsys.messageport.kCFMessagePortSuccess
 import io.github.kotlinmania.corefoundationsys.number.kCFNumberFloat32Type
 import io.github.kotlinmania.corefoundationsys.number.kCFNumberFloat64Type
 import io.github.kotlinmania.corefoundationsys.number.kCFNumberMaxType
 import io.github.kotlinmania.corefoundationsys.number.kCFNumberSInt32Type
+import io.github.kotlinmania.corefoundationsys.numberformatter.CFNumberFormatter
+import io.github.kotlinmania.corefoundationsys.numberformatter.kCFNumberFormatterDecimalStyle
 import io.github.kotlinmania.corefoundationsys.propertylist.kCFPropertyListBinaryFormat_v1_0
 import io.github.kotlinmania.corefoundationsys.propertylist.kCFPropertyListImmutable
 import io.github.kotlinmania.corefoundationsys.propertylist.kCFPropertyListMutableContainers
 import io.github.kotlinmania.corefoundationsys.propertylist.kCFPropertyListXMLFormat_v1_0
+import io.github.kotlinmania.corefoundationsys.runloop.kCFRunLoopBeforeSources
+import io.github.kotlinmania.corefoundationsys.runloop.kCFRunLoopRunFinished
+import io.github.kotlinmania.corefoundationsys.socket.kCFSocketSuccess
+import io.github.kotlinmania.corefoundationsys.stream.kCFStreamEventOpenCompleted
+import io.github.kotlinmania.corefoundationsys.stream.kCFStreamStatusOpen
 import io.github.kotlinmania.corefoundationsys.string.kCFStringEncodingMacRoman
 import io.github.kotlinmania.corefoundationsys.string.kCFStringEncodingUTF8
+import io.github.kotlinmania.corefoundationsys.stringtokenizer.kCFStringTokenizerTokenNormal
+import io.github.kotlinmania.corefoundationsys.tree.CFTree
 import io.github.kotlinmania.corefoundationsys.url.kCFBookmarkResolutionWithoutUIMask
 import io.github.kotlinmania.corefoundationsys.url.kCFURLBookmarkCreationMinimalBookmarkMask
 import io.github.kotlinmania.corefoundationsys.url.kCFURLPOSIXPathStyle
+import io.github.kotlinmania.corefoundationsys.urlenumerator.kCFURLEnumeratorSuccess
+import io.github.kotlinmania.corefoundationsys.usernotification.kCFUserNotificationDefaultResponse
 import io.github.kotlinmania.corefoundationsys.uuid.CFUUIDBytes
+import io.github.kotlinmania.corefoundationsys.xmlnode.kCFXMLNodeTypeDocument
+import io.github.kotlinmania.corefoundationsys.xmlparser.kCFXMLStatusParseSuccessful
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -72,8 +92,10 @@ class CoreFoundationSysTest {
 
     @Test
     fun testErrorConstants() {
-        assertEquals("NSPOSIXErrorDomain", CFErrorDomain.POSIX)
-        assertEquals("NSCocoaErrorDomain", CFErrorDomain.Cocoa)
+        assertEquals("NSPOSIXErrorDomain", CFErrorDomains.POSIX)
+        assertEquals("NSCocoaErrorDomain", CFErrorDomains.Cocoa)
+        assertEquals("NSPOSIXErrorDomain", kCFErrorDomainPOSIX)
+        assertEquals("NSCocoaErrorDomain", kCFErrorDomainCocoa)
         assertEquals("NSLocalizedDescription", CFErrorUserInfoKey.LocalizedDescription)
         assertEquals("NSUnderlyingError", CFErrorUserInfoKey.UnderlyingError)
     }
@@ -103,5 +125,27 @@ class CoreFoundationSysTest {
         assertEquals(0, kCFURLPOSIXPathStyle)
         assertEquals(512L, kCFURLBookmarkCreationMinimalBookmarkMask)
         assertEquals(256L, kCFBookmarkResolutionWithoutUIMask)
+    }
+
+    @Test
+    fun testNewlyPortedModules() {
+        assertEquals(1, kCFRunLoopRunFinished)
+        assertEquals(4L, kCFRunLoopBeforeSources)
+        assertEquals(0, kCFSocketSuccess)
+        assertEquals(2, kCFStreamStatusOpen)
+        assertEquals(1L, kCFStreamEventOpenCompleted)
+        assertEquals(1L, kCFFileDescriptorReadCallBack)
+        assertEquals(2L, kCFFileDescriptorWriteCallBack)
+        assertEquals(1L, kCFFileSecurityClearOwner)
+        assertEquals(0, kCFMessagePortSuccess)
+        assertEquals(1, kCFNumberFormatterDecimalStyle)
+        assertEquals("kCFNumberFormatterCurrencyCode", CFNumberFormatter.CURRENCY_CODE)
+        assertEquals(1L, kCFStringTokenizerTokenNormal)
+        assertEquals(1L, kCFURLEnumeratorSuccess)
+        assertEquals(0L, kCFUserNotificationDefaultResponse)
+        assertEquals(1, kCFXMLNodeTypeDocument)
+        assertEquals(0, kCFXMLStatusParseSuccessful)
+        assertEquals(47L, CFTree.getTypeID())
+        assertEquals(48L, CFAttributedString.getTypeID())
     }
 }

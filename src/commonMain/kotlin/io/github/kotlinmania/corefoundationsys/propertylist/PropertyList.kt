@@ -4,6 +4,8 @@ package io.github.kotlinmania.corefoundationsys.propertylist
 import io.github.kotlinmania.corefoundationsys.base.CFIndex
 import io.github.kotlinmania.corefoundationsys.base.CFOptionFlags
 
+public typealias CFPropertyListRef = Any
+
 /**
  * `CFPropertyListFormat` from CoreFoundation's `propertylist.rs` (upstream `pub type CFPropertyListFormat = CFIndex`).
  */
