@@ -1,6 +1,11 @@
 // port-lint: source uuid.rs
 package io.github.kotlinmania.corefoundationsys.uuid
 
+import io.github.kotlinmania.corefoundationsys.base.CFTypeID
+
+public class __CFUUID
+public typealias CFUUIDRef = __CFUUID
+
 /**
  * `CFUUIDBytes` from CoreFoundation's `uuid.rs`.
  * A 128-bit UUID representation split into 16 individual bytes.
@@ -59,4 +64,10 @@ public data class CFUUIDBytes(
             )
         }
     }
+}
+
+public object CFUUID {
+    public const val TYPE_ID: CFTypeID = 30L
+
+    public fun getTypeID(): CFTypeID = TYPE_ID
 }

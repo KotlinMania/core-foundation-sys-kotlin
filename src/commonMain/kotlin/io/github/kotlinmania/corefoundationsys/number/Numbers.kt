@@ -1,6 +1,14 @@
 // port-lint: source number.rs
 package io.github.kotlinmania.corefoundationsys.number
 
+import io.github.kotlinmania.corefoundationsys.base.CFTypeID
+
+public class __CFBoolean
+public typealias CFBooleanRef = __CFBoolean
+
+public class __CFNumber
+public typealias CFNumberRef = __CFNumber
+
 /**
  * `CFNumberType` from CoreFoundation's `number.rs` (upstream `pub type CFNumberType = u32`).
  */
@@ -23,3 +31,15 @@ public const val kCFNumberCFIndexType: CFNumberType = 14u
 public const val kCFNumberNSIntegerType: CFNumberType = 15u
 public const val kCFNumberCGFloatType: CFNumberType = 16u
 public const val kCFNumberMaxType: CFNumberType = 16u
+
+public object CFNumber {
+    public const val TYPE_ID: CFTypeID = 32L
+
+    public fun getTypeID(): CFTypeID = TYPE_ID
+}
+
+public object CFBooleanObject {
+    public const val TYPE_ID: CFTypeID = 33L
+
+    public fun getTypeID(): CFTypeID = TYPE_ID
+}
