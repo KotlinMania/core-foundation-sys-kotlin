@@ -80,18 +80,22 @@ public typealias ConstStringPtr = ByteArray?
 /**
  * `CFComparisonResult` from CoreFoundation's `base.rs`.
  */
-public enum class CFComparisonResult(public val value: CFIndex) {
+public enum class CFComparisonResult(
+    public val value: CFIndex,
+) {
     LessThan(-1),
     EqualTo(0),
-    GreaterThan(1);
+    GreaterThan(1),
+    ;
 
     public companion object {
-        public fun from(value: CFIndex): CFComparisonResult = when (value) {
-            -1 -> LessThan
-            0 -> EqualTo
-            1 -> GreaterThan
-            else -> throw IllegalArgumentException("Unknown CFComparisonResult value: $value")
-        }
+        public fun from(value: CFIndex): CFComparisonResult =
+            when (value) {
+                -1 -> LessThan
+                0 -> EqualTo
+                1 -> GreaterThan
+                else -> throw IllegalArgumentException("Unknown CFComparisonResult value: $value")
+            }
 
         public fun fromValue(value: CFIndex): CFComparisonResult = from(value)
     }

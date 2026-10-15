@@ -24,7 +24,9 @@ public const val kCFUserNotificationNoDefaultButtonFlag: CFOptionFlags = 1L shl 
 public const val kCFUserNotificationUseRadioButtonsFlag: CFOptionFlags = 1L shl 6
 
 public fun cfUserNotificationCheckBoxChecked(i: CFIndex): CFOptionFlags = (1L shl (8 + i))
+
 public fun cfUserNotificationSecureTextField(i: CFIndex): CFOptionFlags = (1L shl (16 + i))
+
 public fun cfUserNotificationPopUpSelection(n: CFIndex): CFOptionFlags = (n.toLong() shl 24)
 
 public object CFUserNotification {

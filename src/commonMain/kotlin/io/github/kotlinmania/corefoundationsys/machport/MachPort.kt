@@ -3,7 +3,6 @@ package io.github.kotlinmania.corefoundationsys.machport
 
 import io.github.kotlinmania.corefoundationsys.base.CFIndex
 import io.github.kotlinmania.corefoundationsys.base.CFTypeID
-import io.github.kotlinmania.corefoundationsys.base.mach_port_t
 
 public class __CFMachPort
 public typealias CFMachPortRef = __CFMachPort

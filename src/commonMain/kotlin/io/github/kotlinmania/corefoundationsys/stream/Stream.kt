@@ -7,6 +7,7 @@ import io.github.kotlinmania.corefoundationsys.base.CFTypeID
 import io.github.kotlinmania.corefoundationsys.base.SInt32
 
 public class __CFReadStream
+
 public class __CFWriteStream
 
 public typealias CFReadStreamRef = __CFReadStream

@@ -3,7 +3,6 @@ package io.github.kotlinmania.corefoundationsys.array
 
 import io.github.kotlinmania.corefoundationsys.base.CFBoolean
 import io.github.kotlinmania.corefoundationsys.base.CFIndex
-import io.github.kotlinmania.corefoundationsys.base.CFRange
 import io.github.kotlinmania.corefoundationsys.base.CFTypeID
 
 public class __CFArray

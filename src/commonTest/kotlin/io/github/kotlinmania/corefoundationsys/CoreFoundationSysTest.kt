@@ -2,7 +2,9 @@
 package io.github.kotlinmania.corefoundationsys
 
 import io.github.kotlinmania.corefoundationsys.attributedstring.CFAttributedString
+import io.github.kotlinmania.corefoundationsys.base.CFComparisonResult
 import io.github.kotlinmania.corefoundationsys.base.CFRange
+import io.github.kotlinmania.corefoundationsys.base.kCFNotFound
 import io.github.kotlinmania.corefoundationsys.bitvector.kCFBitOne
 import io.github.kotlinmania.corefoundationsys.bitvector.kCFBitZero
 import io.github.kotlinmania.corefoundationsys.data.kCFDataSearchAnchored
@@ -49,15 +51,14 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class CoreFoundationSysTest {
-
     @Test
     fun testCFRange() {
         val range = CFRange.init(10, 20)
         assertEquals(10, range.location)
         assertEquals(20, range.length)
         assertEquals(CFRange(10, 20), range)
-        assertEquals(-1, io.github.kotlinmania.corefoundationsys.base.kCFNotFound)
-        assertEquals(io.github.kotlinmania.corefoundationsys.base.CFComparisonResult.EqualTo, io.github.kotlinmania.corefoundationsys.base.CFComparisonResult.fromValue(0))
+        assertEquals(-1, kCFNotFound)
+        assertEquals(CFComparisonResult.EqualTo, CFComparisonResult.fromValue(0))
     }
 
     @Test

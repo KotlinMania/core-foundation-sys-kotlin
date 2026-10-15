@@ -31,12 +31,25 @@ public data class CFUUIDBytes(
     /**
      * Convert this 16-byte structure into a Kotlin [ByteArray].
      */
-    public fun toByteArray(): ByteArray = byteArrayOf(
-        byte0.toByte(), byte1.toByte(), byte2.toByte(), byte3.toByte(),
-        byte4.toByte(), byte5.toByte(), byte6.toByte(), byte7.toByte(),
-        byte8.toByte(), byte9.toByte(), byte10.toByte(), byte11.toByte(),
-        byte12.toByte(), byte13.toByte(), byte14.toByte(), byte15.toByte(),
-    )
+    public fun toByteArray(): ByteArray =
+        byteArrayOf(
+            byte0.toByte(),
+            byte1.toByte(),
+            byte2.toByte(),
+            byte3.toByte(),
+            byte4.toByte(),
+            byte5.toByte(),
+            byte6.toByte(),
+            byte7.toByte(),
+            byte8.toByte(),
+            byte9.toByte(),
+            byte10.toByte(),
+            byte11.toByte(),
+            byte12.toByte(),
+            byte13.toByte(),
+            byte14.toByte(),
+            byte15.toByte(),
+        )
 
     public companion object {
         /**

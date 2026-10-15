@@ -12,6 +12,7 @@ public class __CFXMLParser
 public typealias CFXMLParserRef = __CFXMLParser
 
 public typealias CFXMLParserOptions = CFOptionFlags
+
 public const val kCFXMLParserValidateDocument: CFXMLParserOptions = 1L shl 0
 public const val kCFXMLParserSkipMetaData: CFXMLParserOptions = 1L shl 1
 public const val kCFXMLParserReplacePhysicalEntities: CFXMLParserOptions = 1L shl 2
@@ -22,6 +23,7 @@ public const val kCFXMLParserAllOptions: CFXMLParserOptions = 0x00FFFFFFL
 public const val kCFXMLParserNoOptions: CFXMLParserOptions = 0L
 
 public typealias CFXMLParserStatusCode = CFIndex
+
 public const val kCFXMLStatusParseNotBegun: CFIndex = -2
 public const val kCFXMLStatusParseInProgress: CFIndex = -1
 public const val kCFXMLStatusParseSuccessful: CFIndex = 0
