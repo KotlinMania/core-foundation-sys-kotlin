@@ -24,6 +24,7 @@ public const val kCFRunLoopRunTimedOut: Int = 3
 public const val kCFRunLoopRunHandledSource: Int = 4
 
 public typealias CFRunLoopActivity = CFOptionFlags
+
 public const val kCFRunLoopEntry: CFOptionFlags = 1L shl 0
 public const val kCFRunLoopBeforeTimers: CFOptionFlags = 1L shl 1
 public const val kCFRunLoopBeforeSources: CFOptionFlags = 1L shl 2

@@ -1,7 +1,6 @@
 // port-lint: source bundle.rs
 package io.github.kotlinmania.corefoundationsys.bundle
 
-import io.github.kotlinmania.corefoundationsys.base.CFIndex
 import io.github.kotlinmania.corefoundationsys.base.CFTypeID
 import io.github.kotlinmania.corefoundationsys.base.CFUInt32
 import io.github.kotlinmania.corefoundationsys.string.CFStringRef
@@ -17,8 +16,11 @@ public const val kCFBundleExecutableArchitectureX86_64: CFUInt32 = 0x01000007u
 public const val kCFBundleExecutableArchitecturePPC64: CFUInt32 = 0x01000012u
 
 public fun CFCopyLocalizedString(key: CFStringRef?, comment: CFStringRef?): CFStringRef? = key
+
 public fun CFCopyLocalizedStringFromTable(key: CFStringRef?, tbl: CFStringRef?, comment: CFStringRef?): CFStringRef? = key
+
 public fun CFCopyLocalizedStringFromTableInBundle(key: CFStringRef?, tbl: CFStringRef?, bundle: CFBundleRef?, comment: CFStringRef?): CFStringRef? = key
+
 public fun CFCopyLocalizedStringWithDefaultValue(key: CFStringRef?, tbl: CFStringRef?, bundle: CFBundleRef?, value: CFStringRef?, comment: CFStringRef?): CFStringRef? = value ?: key
 
 public object CFBundle {

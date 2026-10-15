@@ -44,6 +44,7 @@ public const val kCFBookmarkResolutionWithoutMountingMask: CFURLBookmarkResoluti
 public typealias CFURLBookmarkFileCreationOptions = CFOptionFlags
 
 public typealias CFURLComponentType = CFIndex
+
 public const val kCFURLComponentScheme: CFIndex = 1
 public const val kCFURLComponentNetLocation: CFIndex = 2
 public const val kCFURLComponentPath: CFIndex = 3

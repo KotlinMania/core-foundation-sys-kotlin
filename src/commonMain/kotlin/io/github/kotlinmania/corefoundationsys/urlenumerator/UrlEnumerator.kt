@@ -9,6 +9,7 @@ public class __CFURLEnumerator
 public typealias CFURLEnumeratorRef = __CFURLEnumerator
 
 public typealias CFURLEnumeratorOptions = CFOptionFlags
+
 public const val kCFURLEnumeratorDefaultBehavior: CFURLEnumeratorOptions = 0L
 public const val kCFURLEnumeratorDescendRecursively: CFURLEnumeratorOptions = 1L shl 0
 public const val kCFURLEnumeratorSkipInvisibles: CFURLEnumeratorOptions = 1L shl 1
@@ -18,6 +19,7 @@ public const val kCFURLEnumeratorIncludeDirectoriesPreOrder: CFURLEnumeratorOpti
 public const val kCFURLEnumeratorIncludeDirectoriesPostOrder: CFURLEnumeratorOptions = 1L shl 5
 
 public typealias CFURLEnumeratorResult = CFIndex
+
 public const val kCFURLEnumeratorSuccess: CFURLEnumeratorOptions = 1L
 public const val kCFURLEnumeratorEnd: CFURLEnumeratorOptions = 2L
 public const val kCFURLEnumeratorError: CFURLEnumeratorOptions = 3L

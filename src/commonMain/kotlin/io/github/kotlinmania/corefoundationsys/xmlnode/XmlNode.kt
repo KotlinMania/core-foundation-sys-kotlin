@@ -16,6 +16,7 @@ public typealias CFXMLTreeRef = CFTreeRef
 public const val kCFXMLNodeCurrentVersion: CFIndex = 1
 
 public typealias CFXMLNodeTypeCode = CFIndex
+
 public const val kCFXMLNodeTypeDocument: CFXMLNodeTypeCode = 1
 public const val kCFXMLNodeTypeElement: CFXMLNodeTypeCode = 2
 public const val kCFXMLNodeTypeAttribute: CFXMLNodeTypeCode = 3
@@ -76,6 +77,7 @@ public data class CFXMLAttributeListDeclarationInfo(
 )
 
 public typealias CFXMLEntityTypeCode = CFIndex
+
 public const val kCFXMLEntityTypeParameter: CFXMLEntityTypeCode = 0
 public const val kCFXMLEntityTypeParsedInternal: CFXMLEntityTypeCode = 1
 public const val kCFXMLEntityTypeParsedExternal: CFXMLEntityTypeCode = 2
